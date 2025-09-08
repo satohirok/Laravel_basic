@@ -2,6 +2,9 @@
 
 @section('title', 'イベント登録')
 @section('content')
+    @if (session('success'))
+        <p style="color: green;">{{ session('success') }}</p>
+    @endif
     <form action="{{ route('events.store') }}" method="POST">
         @csrf
         <div><label>イベント名: <input type="text" name="name"></label></div>
