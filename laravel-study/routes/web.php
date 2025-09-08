@@ -5,6 +5,7 @@ use App\Http\Controllers\UtilityController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\RequestSampleController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\HiLowController;
 
 Route::get('/hello-world', function () {
     return view('hello_world', [
@@ -44,3 +45,9 @@ Route::get('/login', [RequestSampleController::class, 'loginForm'])->name('login
 Route::post('/login', [RequestSampleController::class, 'login'])->name('login');
 
 Route::resource('/events', EventController::class)->only(['create', 'store']);
+
+Route::get('/hi-low', [HiLowController::class, 'index'])->name('hi-low.index');
+
+// ハイローゲーム
+Route::get('/hi-low', [HiLowController::class, 'index'])->name('hi-low');
+Route::post('/hi-low', [HiLowController::class, 'result']);
