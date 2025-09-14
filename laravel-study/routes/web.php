@@ -6,6 +6,7 @@ use App\Http\Controllers\GameController;
 use App\Http\Controllers\RequestSampleController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HiLowController;
+use App\Http\Controllers\PhotoController;
 
 Route::get('/hello-world', function () {
     return view('hello_world', [
@@ -51,3 +52,7 @@ Route::get('/hi-low', [HiLowController::class, 'index'])->name('hi-low.index');
 // ハイローゲーム
 Route::get('/hi-low', [HiLowController::class, 'index'])->name('hi-low');
 Route::post('/hi-low', [HiLowController::class, 'result']);
+
+// ファイル登録機能
+Route::resource('/photos', PhotoController::class)->only(['create','store','show','destroy']);
+Route::get('/photos/{photo}/download', [PhotoController::class, 'download'])->name('photos.download');
