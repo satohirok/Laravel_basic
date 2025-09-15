@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\Admin\StoreBlogRequest;
+use App\Models\Blog;
 
 class AdminBlogController extends Controller
 {
@@ -17,5 +19,15 @@ class AdminBlogController extends Controller
     public function create()
     {
         return view('admin.blogs.create');
+    }
+
+    // ブログ投稿処理
+    public function store(StoreBlogRequest $request)
+    {
+        $validated = $request->validated();
+        $validated['image'] = $request->file('image')->store('blogs', 'public');
+        Blog::create($validated);
+
+        return redirect()->route('admin.blogs.index')->with('success', 'ブログを登録しました。');
     }
 }
