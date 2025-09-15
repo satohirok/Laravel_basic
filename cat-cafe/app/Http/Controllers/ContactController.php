@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Http\Requests\ContactRequest;
 
 class ContactController extends Controller
 {
@@ -17,16 +18,9 @@ class ContactController extends Controller
         return view('contact.complete');
     }
 
-    public function sendMail(Request $request)
+    public function sendMail(ContactRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|max:255',
-            'name_kana' => 'required|max:255',
-            'email' => 'required|email|max:255',
-            'body' => 'required',
-        ]);
-
-        // メール送信処理（省略）
+        $validated = $request->validated();
 
         Log::debug("{$validated['name']}様からお問い合わせがありました。");
         return redirect()->route('contact.complete');
