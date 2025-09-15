@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\ContactRequest;
+use App\Mail\ContactAdminMail;
+use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
@@ -22,7 +24,7 @@ class ContactController extends Controller
     {
         $validated = $request->validated();
 
-        Log::debug("{$validated['name']}様からお問い合わせがありました。");
+        Mail::to('admin@example.com')->send(new ContactAdminMail($validated));
         return redirect()->route('contact.complete');
     }
 }
