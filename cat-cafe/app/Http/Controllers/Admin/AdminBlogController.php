@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Admin\StoreBlogRequest;
 use App\Http\Requests\Admin\UpdateBlogRequest;
 use App\Models\Blog;
+use App\Models\Category;
 
 class AdminBlogController extends Controller
 {
@@ -38,7 +39,8 @@ class AdminBlogController extends Controller
     public function edit(int $id)
     {
         $blog = Blog::findOrFail($id);
-        return view('admin.blogs.edit', ['blog' => $blog]);
+        $categories = Category::all();
+        return view('admin.blogs.edit', ['blog' => $blog, 'categories' => $categories]);
     }
 
     // ブログ更新処理
@@ -53,6 +55,7 @@ class AdminBlogController extends Controller
             Storage::disk('public')->delete($blog->image);
             $validated['image'] = $request->file('image')->store('blogs', 'public');
         }
+        $blog->category()->associate($validated['category_id']);
         $blog->update($validated);
 
         return redirect()->route('admin.blogs.index')->with('success', 'ブログを更新しました。');

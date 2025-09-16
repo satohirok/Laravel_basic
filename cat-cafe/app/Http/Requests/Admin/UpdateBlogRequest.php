@@ -31,6 +31,7 @@ class UpdateBlogRequest extends FormRequest
                 'mimes:jpeg,png,jpg,gif,svg',
                 'dimensions:min_width=300,min_height=300,max_width=1200,max_height=1200',
             ],
+            'category_id' => ['required','integer','exists:categories,id'],
             'body' => 'required|string',
         ];
     }
