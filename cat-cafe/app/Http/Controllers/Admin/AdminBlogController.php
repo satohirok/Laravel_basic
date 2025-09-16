@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Admin\StoreBlogRequest;
 use App\Http\Requests\Admin\UpdateBlogRequest;
 use App\Models\Blog;
@@ -13,7 +14,7 @@ class AdminBlogController extends Controller
     // ブログ一覧表示
     public function index()
     {
-        $blogs = Blog::all();
+        $blogs = Blog::latest()->simplePaginate(10);
         return view('admin.blogs.index',['blogs' => $blogs]);
     }
 
@@ -55,5 +56,16 @@ class AdminBlogController extends Controller
         $blog->update($validated);
 
         return redirect()->route('admin.blogs.index')->with('success', 'ブログを更新しました。');
+    }
+
+    // ブログの削除処理
+    public function destroy(int $id)
+    {
+        $blog = Blog::findOrFail($id);
+        // 画像を削除
+        Storage::disk('public')->delete($blog->image);
+        $blog->delete();
+
+        return redirect()->route('admin.blogs.index')->with('success', 'ブログを削除しました。');
     }
 }
