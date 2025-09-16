@@ -12,7 +12,8 @@ class AdminBlogController extends Controller
     // ブログ一覧表示
     public function index()
     {
-        return view('admin.blogs.index');
+        $blogs = Blog::all();
+        return view('admin.blogs.index',['blogs' => $blogs]);
     }
 
     // ブログ投稿画面
@@ -29,5 +30,11 @@ class AdminBlogController extends Controller
         Blog::create($validated);
 
         return redirect()->route('admin.blogs.index')->with('success', 'ブログを登録しました。');
+    }
+
+    public function edit(int $id)
+    {
+        $blog = Blog::findOrFail($id);
+        return view('admin.blogs.edit', ['blog' => $blog]);
     }
 }
