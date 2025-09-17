@@ -9,6 +9,7 @@ use App\Http\Requests\Admin\StoreBlogRequest;
 use App\Http\Requests\Admin\UpdateBlogRequest;
 use App\Models\Blog;
 use App\Models\Category;
+use App\Models\Cat;
 
 class AdminBlogController extends Controller
 {
@@ -40,7 +41,8 @@ class AdminBlogController extends Controller
     {
         $blog = Blog::findOrFail($id);
         $categories = Category::all();
-        return view('admin.blogs.edit', ['blog' => $blog, 'categories' => $categories]);
+        $cats = Cat::all();
+        return view('admin.blogs.edit', ['blog' => $blog, 'categories' => $categories, 'cats' => $cats]);
     }
 
     // ブログ更新処理
@@ -57,6 +59,7 @@ class AdminBlogController extends Controller
         }
         $blog->category()->associate($validated['category_id']);
         $blog->update($validated);
+        $blog->cats()->sync($validated['cats'] ?? []);
 
         return redirect()->route('admin.blogs.index')->with('success', 'ブログを更新しました。');
     }

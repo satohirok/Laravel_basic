@@ -33,6 +33,7 @@ class UpdateBlogRequest extends FormRequest
             ],
             'category_id' => ['required','integer','exists:categories,id'],
             'body' => 'required|string',
+            'cats.*' => ['distinct', 'exists:cats,id']
         ];
     }
 }
