@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Admin\StoreBlogRequest;
 use App\Http\Requests\Admin\UpdateBlogRequest;
 use App\Models\Blog;
@@ -42,7 +43,11 @@ class AdminBlogController extends Controller
         $blog = Blog::findOrFail($id);
         $categories = Category::all();
         $cats = Cat::all();
-        return view('admin.blogs.edit', ['blog' => $blog, 'categories' => $categories, 'cats' => $cats]);
+        return view('admin.blogs.edit', [
+            'blog' => $blog,
+            'categories' => $categories,
+            'cats' => $cats
+        ]);
     }
 
     // ブログ更新処理
